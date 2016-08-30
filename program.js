@@ -1,9 +1,13 @@
 var express = require("express");
-var stylus = require('stylus');
-var path = require("path");
+
 var app = express();
 
-app.use(stylus.middleware(process.argv[3]||path.join(__dirname, 'public')));
-app.use(express.static(process.argv[3]||path.join(__dirname, 'public')));
+app.put('/message/:id', function(req, res) {
+    var id = req.params.id;
+    res.end(require('crypto')
+      .createHash('sha1')
+      .update(new Date().toDateString() + id)
+      .digest('hex'));
+});
 
 app.listen(process.argv[2]);
